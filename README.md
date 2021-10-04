@@ -1,2 +1,2 @@
 # hello_world
-for education
+For education
