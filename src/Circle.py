@@ -1,5 +1,4 @@
 from src.Figure import Figure
-
 import math
 
 

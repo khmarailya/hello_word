@@ -4,7 +4,7 @@ class Figure:
 
     def __init__(self, name: str = None):
         if self.__class__ == Figure:
-            raise ValueError('You shouldn`t use this')
+            raise ValueError('Создавать экземпляры базового класса Figure запрещено')
 
         self.__class__.COUNT += 1
         self.name = name
@@ -24,11 +24,11 @@ class Figure:
 
     @property
     def area(self) -> float:
-        raise NotImplementedError('You shouldn`t use this')
+        raise NotImplementedError('Необходимо реализовать вычисление площади')
 
     @property
     def perimeter(self) -> float:
-        raise NotImplementedError('You shouldn`t use this')
+        raise NotImplementedError('Необходимо реализовать вычисление периметра')
 
     def add_area(self, figure: 'Figure') -> float:
         if not isinstance(figure, Figure):

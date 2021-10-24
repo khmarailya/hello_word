@@ -1,7 +1,5 @@
 from src.Figure import Figure
 
-import math
-
 
 class Rectangle(Figure):
 
