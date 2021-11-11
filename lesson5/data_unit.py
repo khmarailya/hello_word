@@ -32,11 +32,11 @@ class DataUnit:
 
 
 class CSVBook(DataUnit):
-    d_author = DataUnit._d_property('Author', '')
-    d_title = DataUnit._d_property('Title', '')
-    d_genre = DataUnit._d_property('Genre', '')
-    d_pages = DataUnit._d_property('Pages', 0)
-    d_publisher = DataUnit._d_property('Publisher', '')
+    d_author: str = DataUnit._d_property('Author', '')
+    d_title: str = DataUnit._d_property('Title', '')
+    d_genre: str = DataUnit._d_property('Genre', '')
+    d_pages: str = DataUnit._d_property('Pages', '')
+    d_publisher: str = DataUnit._d_property('Publisher', '')
 
 
 class RezJSONBook(DataUnit):
@@ -47,7 +47,7 @@ class RezJSONBook(DataUnit):
 
     def from_book(self, book: CSVBook):
         self.d_author = book.d_author
-        self.d_pages = book.d_pages
+        self.d_pages = int(book.d_pages)
         self.d_title = book.d_title
         self.d_genre = book.d_genre
         return self
