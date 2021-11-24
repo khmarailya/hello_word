@@ -2,7 +2,6 @@ import random
 from typing import Tuple
 
 import pytest
-import csv
 
 import requests
 
@@ -72,12 +71,3 @@ def p_f_random_count_by_breed(request, all_breads, url_random_count_by_breed_res
     breed = random.choice(all_breads)
     cnt = request.param[0]
     return url_random_count_by_breed_response(breed, cnt), breed, *request.param
-
-
-# def pytest_generate_tests(metafunc):
-#     if "auth_availability" in metafunc.fixturenames:
-#         with open(r"E:\MyApp\hello_world\lesson7\data\auth_endpoints.csv") as file:
-#             reader = csv.reader(file)
-#             header = next(reader)
-#             # metafunc.parametrize("auth_availability", reader[:2])
-#             metafunc.parametrize("auth_availability", (next(reader) for i in range(2)))

@@ -48,11 +48,6 @@ def f_random_type(f_types) -> str:
     return Utils.choice(f_types)
 
 
-# @pytest.fixture(scope="function")
-# def f_random_city(f_cities) -> str:
-#     return random.choice(f_cities)
-
-
 @pytest.fixture(scope="session")
 def f_by_city(request) -> requests.Response:
     return Response.by_city(request.param)

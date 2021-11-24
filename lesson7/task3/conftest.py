@@ -1,10 +1,6 @@
-import random
-from typing import Tuple, List, Iterable
+from typing import List
 
 import pytest
-import csv
-
-import requests
 
 from lesson7.task3 import URL, Response, Utils
 

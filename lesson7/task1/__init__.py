@@ -160,16 +160,3 @@ class Utils:
             'params': (x[:3] for x in all_params),
             'ids': (x[3] for x in all_params)
         }
-
-
-# def get_auth_endpoints():
-#     with open("lesson7/data/auth_endpoints.csv", "r") as f:
-#         reader = csv.reader(f)
-#         next(reader)
-#         for i, el in enumerate(reader):
-#             if i > 2:
-#                 break
-#             yield el
-#
-#
-# auth_endpoints = get_auth_endpoints()

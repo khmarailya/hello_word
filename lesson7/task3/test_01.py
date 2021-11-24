@@ -1,6 +1,3 @@
-from typing import Tuple
-
-import requests
 import pytest
 
 from lesson7.task3 import Utils, Response
@@ -100,6 +97,7 @@ class TestRunDelete:
         f_post = Utils.get_post_by_id(f_random_post_id, f_posts)
         Utils.common_post_check(
             Response.by_post_id(f_random_post_id), f_post['id'], f_post['title'], f_post['body'], f_post['userId'])
+
 
 if __name__ == '__main__':
     pass

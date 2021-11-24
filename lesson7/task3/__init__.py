@@ -1,7 +1,5 @@
-import csv
-import imghdr
 import random
-from typing import Tuple, List
+from typing import List
 
 import requests
 
