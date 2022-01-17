@@ -5,8 +5,8 @@ import time
 from collections import defaultdict
 from glob import glob
 from typing import Optional, List
-from lesson19.lib import Matcher, Arguments
 
+from lesson19.lib import Matcher, Arguments
 
 parser = argparse.ArgumentParser(description='Process access.log')
 parser.add_argument(
@@ -38,6 +38,7 @@ for fn in log_list:
         big_idx = 0
         t = time.time()
         for line in file:
+
             if max_lines and idx >= max_lines:
                 break
 
@@ -52,25 +53,25 @@ for fn in log_list:
                 print(f'\rWork in progress... {fn} - {idx}', end='')
                 big_idx = 0
 
-            if arguments.ip is not None:
-                if arguments.r_type is not None:
+            if arguments.r_type is not None:
+                req_cnt[arguments.r_type] += 1
+                if arguments.ip is not None:
                     ip_req_cnt[arguments.ip] += 1
-                    req_cnt[arguments.r_type] += 1
 
-                if arguments.lng is not None:
-                    for i, top_arguments in enumerate(req_top_long):
-                        if top_arguments is None:
-                            need_re_calc = False
-                        elif arguments.lng > top_arguments.lng:
-                            need_re_calc = True
-                        else:
-                            continue
+            if arguments.lng is not None:
+                for i, top_arguments in enumerate(req_top_long):
+                    if top_arguments is None:
+                        need_re_calc = False
+                    elif arguments.lng > top_arguments.lng:
+                        need_re_calc = True
+                    else:
+                        continue
 
-                        req_top_long[i] = arguments
-                        if need_re_calc:
-                            for j in range(i + 2, top_long_cnt):
-                                req_top_long[j] = req_top_long[j - 1]
-                        break
+                    req_top_long[i] = arguments
+                    if need_re_calc:
+                        for j in range(i + 2, top_long_cnt):
+                            req_top_long[j] = req_top_long[j - 1]
+                    break
     res = {
         'file': fn,
         'cnt_req': req_cnt,
@@ -89,10 +90,15 @@ for fn in log_list:
         ],
         'lines': idx,
         'time': round(time.time() - t, 1),
-        'errors': [e.to_dict() for e in list(matcher.errors)[:3]],
+        'errors': [{
+            'args': e.to_dict(),
+            'log': list(log)
+        } for e, log in tuple(matcher.errors.items())[:3]],
         'bad_lines': bad_lines[:3],
     }
     print(f'\r{fn} - {idx}')
     res_fn = os.path.splitext(fn)[0] + '.json'
     with open(res_fn, 'w') as res_file:
-        json.dump(res, res_file, indent=4)
+        res = json.dumps(res, indent=4)
+        res_file.write(res)
+        print(res)
