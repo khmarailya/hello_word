@@ -5,6 +5,8 @@ from typing import Optional
 import parse
 
 
+CORRECT_R_TYPES = set('POST|GET|PUT|DELETE|HEAD|CONNECT|OPTIONS|TRACE'.split('|'))
+
 class Arguments:
     ip: str = None
     user: str = None
@@ -32,10 +34,8 @@ class Arguments:
                 raise Exception(msg)
 
         elif arg_name == 'r_type':
-            res = re.search(r"(POST|GET|PUT|DELETE|HEAD|CONNECT|OPTIONS|TRACE)", arg_val.upper())
-            if res is not None:
-                self.r_type = res.group()
-
+            if arg_val in CORRECT_R_TYPES:
+                self.r_type = arg_val
             else:
                 self.r_type = 'UNKNOWN'
                 msg = 'Can\'t parse correct "r_type"'
