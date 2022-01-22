@@ -7,3 +7,6 @@ mitmproxy==7.0.4
 allure-pytest==2.9.45
 pytest-xdist==2.2.1
 parse
+flake8==4.0.1
+paramiko==2.8.1
+pylint==2.12.2

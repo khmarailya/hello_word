@@ -1,0 +1,12 @@
+[flake8]
+ignore =
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    .pytest_cache,
+    allure-report,
+    allure-results,
+    venv
+max-complexity = 5
+max-line-length = 120
