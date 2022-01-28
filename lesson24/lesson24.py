@@ -20,6 +20,7 @@ from subprocess import (
     PIPE, Popen
 )
 
+
 def parse():
     with Popen(["ps", "aux"], stderr=PIPE, stdout=PIPE, encoding='utf-8') as p:
         head_line = next(p.stdout)
