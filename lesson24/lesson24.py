@@ -49,14 +49,14 @@ def parse():
             user_proc_cnt[user] += 1
 
             command = info_list[command_ind]
-            mem_info = float(info_list[mem_ind])
-            cpu_info = float(info_list[cpu_ind])
+            mem_info_ = float(info_list[mem_ind])
+            cpu_info_ = float(info_list[cpu_ind])
 
-            proc_mem_cnt[command] += mem_info
-            proc_cpu_cnt[command] += cpu_info
+            proc_mem_cnt[command] += mem_info_
+            proc_cpu_cnt[command] += cpu_info_
 
-            mem_info += mem_info
-            cpu_info += cpu_info
+            mem_info += mem_info_
+            cpu_info += cpu_info_
 
     dt = datetime.datetime.now().strftime('%d-%m-%Y-%H-%M')
     with open(dt + '-scan.txt', 'w', encoding='utf-8') as f:
