@@ -1,15 +1,12 @@
 """
 Примеры:
-pytest lesson18/test_01.py::TestRunAll::test_main_page --browser="chrome"
-python -m pytest lesson18/test_01.py::TestRunAll::test_main_page
-Последний вариант работает с относительным импортом
+python -m pytest lesson18/test_01.py::TestRunAll::test_main_page --browser=chrome --executor=http://q.w.ru --bversion=86.0
+E:/ПО/allure-2.14.0/bin/allure.bat generate allure-results -c
 """
 import json
 import logging
 import time
 from datetime import datetime
-from subprocess import Popen
-from typing import Tuple
 
 import allure
 import pytest
@@ -29,9 +26,8 @@ class CONFIG:
     KEY_LOG_LEVEL = '__KEY_LOG_LEVEL__'
     ALWAYS_SCREEN = False
 
-    # ALLURE_FILE = 'E:/ПО/allure-2.14.0/bin/allure.bat'
-    # ALLURE_RESULTS = 'allure-results'
-    # ALLURE_REPORT = 'allure-report'
+    ALLURE_RESULTS = 'allure-results'
+    ALLURE_REPORT = 'allure-report'
 
     BROWSERS = {
         'chrome': r'E:\MyApp\hello_world\chromedriver.exe',  # путь до хрома
@@ -64,19 +60,15 @@ def pytest_addoption(parser: Parser):
     parser.addoption('--url', action='store', help='Main page', default='https://demo.opencart.com/')
     parser.addoption('--browser_console_log', action="store_true", help='Console logs to files')
     parser.addoption('--log_level', action='store', choices=['DEBUG'], default='DEBUG', type=str, help='Log level')
-    parser.addoption('--allureexe', action='store', default='E:/ПО/allure-2.14.0/bin/allure.bat', type=str,
-                     help='Allure exe')
-    parser.addoption('--allureres', action='store', default='allure-results', type=str, help='Allure result')
-    parser.addoption('--allurerep', action='store', default='allure-report', type=str, help='Allure report')
-    parser.addoption('--executor', action='store', default='')
-    parser.addoption('--bversion', action='store', default='')
+    parser.addoption('--executor', action='store', default='')  # http://qasuag.corp.tander.ru
+    parser.addoption('--bversion', action='store', default='')  # 86.0
     parser.addoption('--vnc', action='store_true', default=True)
     parser.addoption('--logs', action='store_true', default=True)
     parser.addoption('--video', action='store_true', default=False)
 
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
 # https://github.com/pytest-dev/pytest/issues/230#issuecomment-402580536
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
@@ -101,9 +93,6 @@ def wait_url_data(url, timeout=10) -> requests.Response:
 def browser(request: SubRequest) -> WebDriver:
     test_name = request.node.name
     log_level = request.config.getoption("--log_level")
-    allure_report_folder = request.config.getoption('--allurerep')
-    allure_result_folder = request.config.getoption('--allureres')
-    allure_exe = request.config.getoption('--allureexe')
     console_log = request.config.getoption('--browser_console_log')
 
     logger = logging.getLogger('driver')
@@ -150,7 +139,7 @@ def browser(request: SubRequest) -> WebDriver:
         })
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--no-sandbox')
-        kwargs = dict(command_executor=f'http://{executor}:4444/wd/hub')
+        kwargs = dict(command_executor=f'{executor}:4444/wd/hub')
     else:
         kwargs = dict(executable_path=CONFIG.BROWSERS[browser])
 
@@ -164,21 +153,16 @@ def browser(request: SubRequest) -> WebDriver:
         attachment_type=allure.attachment_type.JSON)
 
     if executor:
-        logger.info(f'http://{executor}:8080/#/sessions/' + driver.session_id)
+        logger.info(f'{executor}:8080/#/sessions/' + driver.session_id)
 
     logger.info(f'Browser {browser}: {driver.desired_capabilities}')
 
-    # driver.maximize_window()
+    driver.set_page_load_timeout(3)
+    driver.maximize_window()
     driver.implicitly_wait(5)
 
     def fin():
         if console_log:
-            # driver.execute_script("console.warn('Here is the WARNING message!')")
-            # driver.execute_script("console.error('Here is the ERROR message!')")
-            # driver.execute_script("console.log('Here is the LOG message!')")
-            # driver.execute_script("console.info('Here is the INFO message!')")
-            # print(driver.log_types)
-
             # Логирование
             for key in (
                     'performance',  # производительности страницы
@@ -212,10 +196,10 @@ def browser(request: SubRequest) -> WebDriver:
 
         driver.quit()
         logger.info(f'Test {test_name} finished: {datetime.now()}')
-        logger.info(f'Report: allure open {allure_report_folder}')
+        logger.info(f'Report: (after generate) allure open {CONFIG.ALLURE_REPORT}')
 
         # Add environment info to allure-report
-        with open(f'{allure_result_folder}/environment.xml', 'w+') as file:
+        with open(f'{CONFIG.ALLURE_RESULTS}/environment.xml', 'w+') as file:
             s = '<environment>'
 
             def add_param(key, value):
@@ -231,11 +215,6 @@ def browser(request: SubRequest) -> WebDriver:
             s += add_param('Executor', executor) if executor else ''
             s += '</environment>'
             file.write(s)
-
-        #
-        # allure_ = Popen([allure_exe, 'generate', allure_result_folder, '-o', allure_report_folder, '-c'])
-        # allure_ = Popen([allure_exe, 'generate', allure_result_folder, '-c'])
-        # allure_.wait()
 
     request.addfinalizer(fin)
 

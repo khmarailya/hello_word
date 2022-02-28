@@ -1,9 +1,8 @@
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from ..Wait import Wait
-from ..locators import CSS, XPATH
-from ..page_object.BasePage import BasePage, screen_step
+from lesson18.libs.Wait import Wait
+from lesson18.libs.locators import CSS, XPATH
+from lesson18.libs.page_object.BasePage import BasePage, screen_step
 
 
 class RegisterPage(BasePage):

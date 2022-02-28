@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
-from ..locators import CSS
-from ..page_object.BasePage import BasePage, screen_step
+from lesson18.libs.locators import CSS
+from lesson18.libs.page_object.BasePage import BasePage, screen_step
 
 
 class Header(BasePage):
