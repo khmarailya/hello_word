@@ -1,10 +1,10 @@
 import allure
 from selenium.webdriver.support import expected_conditions as EC
 
-from ..Wait import Wait
-from ..element.AlertError import AlertError
-from ..locators import CSS, XPATH
-from ..page_object.BasePage import BasePage, screen_step
+from lesson18.libs.Wait import Wait
+from lesson18.libs.element.AlertError import AlertError
+from lesson18.libs.locators import CSS, XPATH
+from lesson18.libs.page_object.BasePage import BasePage, screen_step
 
 
 class AdminProductPage(BasePage):

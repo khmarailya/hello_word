@@ -1,11 +1,10 @@
 import allure
 
-from ..locators import XPATH, CSS
-from ..page_object.BasePage import BasePage, screen_step
+from lesson18.libs.locators import XPATH, CSS
+from lesson18.libs.page_object.BasePage import BasePage, screen_step
 
 
 class AdminLoginForm(BasePage):
-
     SELF = CSS().body.descendant.id('content').res
     USER_LABEL = XPATH().label.for_('input-username').res
     USER_INPUT = XPATH().input.name('username').res
@@ -28,4 +27,3 @@ class AdminLoginForm(BasePage):
 
         with allure.step('Submit'):
             self._verify_visible_element(self.SUBMIT).click()
-

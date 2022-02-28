@@ -1,8 +1,5 @@
 import random
 import string
-from typing import Iterable
-
-import allure
 
 
 def random_string(lenght=10):

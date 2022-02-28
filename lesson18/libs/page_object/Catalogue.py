@@ -1,5 +1,5 @@
-from ..locators import CSS, XPATH
-from ..page_object.BasePage import BasePage, screen_step
+from lesson18.libs.locators import CSS, XPATH
+from lesson18.libs.page_object.BasePage import BasePage, screen_step
 
 
 class CataloguePage(BasePage):
