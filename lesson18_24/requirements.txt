@@ -1,0 +1,12 @@
+pytest==6.2.5
+selenium==3.141.0
+requests
+multipledispatch
+browsermob-proxy==0.8.0
+mitmproxy==7.0.4
+allure-pytest==2.9.45
+pytest-xdist==2.2.1
+parse
+flake8==4.0.1
+paramiko==2.8.1
+pylint==2.12.2

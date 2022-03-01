@@ -157,9 +157,9 @@ def browser(request: SubRequest) -> WebDriver:
 
     logger.info(f'Browser {browser}: {driver.desired_capabilities}')
 
-    driver.set_page_load_timeout(3)
     driver.maximize_window()
     driver.implicitly_wait(5)
+    driver.set_page_load_timeout(5)
 
     def fin():
         if console_log:
